@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+    <meta name="author" content="">
+		<title>Marathon Mind</title>
+		<link rel="stylesheet" type="text/css" href="stylesheets/dist/css/bootstrap.min.css">
+    <link href="stylesheets/jumbotron-narrow.css" rel="stylesheet">
+    <link rel="stylesheet" href="/charts/angular-chart.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
+    <script src="stylesheets/dist/js/bootstrap.min.js"></script>
+	</head>
+
+ <body ng-app="app" ng-controller="homeController">
+
+    <div class="container">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation" class="active"><a href="#">Home</a></li>
+            <li ng-if="user.account.admin" role="presentation"><a href="/data">View Data</a></li>
+            <li role="presentation"><a href="/logout">Logout</a></li>
+          </ul>
+        </nav>
+        <h3 class="text-muted">Marathon Mind</h3>
+      </div>
+
+      <div ng-show="user.account.testTaken" class="jumbotron">
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner" role="listbox">
+            <div class="item active">
+              <div class="container">
+                <h3>You are a {{user.account.rawScores.cluster}}</h3>
+                <canvas id="radar" class="chart chart-radar" chart-data="data" chart-labels="labels" chart-legend="true" chart-series="series" chart-colours="colors"></canvas> 
+              </div>
+            </div>
+            <div class="item">
+              <div class="container">
+                <h3>{{myCluster.type}}s</h3>
+                <p>{{myCluster.info}}</p>  
+              </div>
+            </div>
+          </div>
+          <div class="container" style="top-margin: 5px;">
+            <ol class="carousel-indicators">
+              <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+              <li data-target="#myCarousel" data-slide-to="1"></li>
+            </ol>
+          </div>
+          <!-- Controls -->
+          <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+          </a>
+          <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+          </a>
+        </div>
+      </div>
+
+      <div ng-show="!user.account.testTaken" class="jumbotron">
+        <h1>Welcome {{user.account.name}}</h1>
+        <p class="lead">Want to find out what kind of runner you are?  Take this short survey and see how you compare to other runners.</p>
+        <p><a class="btn btn-lg btn-success" href="/survey" role="button">Survey</a></p>
+      </div>
+
+      <div class="row marketing">
+        <div class="col-lg-6">
+          <h4>Competition</h4>
+          <p>To compete with others. To see how high I can place. To get a faster time than my friends. To beat someone I've never beaten before.</p>
+
+          <h4>Personal Goal Achievement</h4>
+          <p>To improve my running speed. To compete with myself. To push myself. To beat a certain time. To try to run faster.</p>
+
+          <h4>Psychological Coping</h4>
+          <p>To become less anxious. To distract myself from daily worries. To improve my mood. To concentrate on my thoughts. To solve problems.</p>
+
+          <h4>Weight Concern</h4>
+          <p>To look leaner. To help control my weight. To reduce my weight.</p>
+
+          <h4>Affiliation</h4>
+          <p>To socialize with other runners. To meet people. To visit with friends. To share a group identity with runners.</p>
+        </div>
+
+        <div class="col-lg-6">
+          <h4>Self-esteem</h4>
+          <p>To improve my self-esteem. To feel more confident. To feel proud of myself. To feel a sense of achievement. To feel mentally in control of my body.</p>
+
+          <h4>Life Meaning</h4>
+          <p>To make my life more purposeful. To make myself feel whole. To feel a sense of belonging with nature. To feel at pease with the world.</p>
+
+          <h4>Health Orientation</h4>
+          <p>To improve my health. To prolong my life. To become more physically fit. To reduce my chance of having a heart attack. To stay in physical condition.</p>
+
+          <h4>Recognition</h4>
+          <p>To earn respect of peers. People look up to me. Brings me recognition. To make my family or friends proud of me.</p>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <p>Brigham Young University</p>
+      </footer>
+
+    </div> <!-- /container -->
+    <script src="javascripts/app.js"></script>
+    <script src="javascripts/factories/UsersAPI.js"></script>
+    <script src="javascripts/controllers/homeController.js"></script>
+  </body>
+  <script src="/otherCharts/Chart.min.js"></script> 
+  <script src="/charts/angular-chart.min.js"></script>
+</html>
+

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Create Profile</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="stylesheets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="stylesheets/survey.css" rel="stylesheet">
+
+    <!-- Angular -->
+    <link rel="stylesheet" href="/charts/angular-chart.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
+  </head>
+  <body ng-app="app" ng-controller="surveyController">
+    <div class="container">
+      <form name="surveyQuestions">
+        <h2 class="form-signin-heading">Please use the scale provided to rate the following <strong>reasons to run</strong></h2>
+        <div ng-repeat="q in survey track by $index">
+          <label class="statement">{{q.question}}</label>
+          <ul class='likert row' style="display:block;">
+            <li class="col-md-1 col-md-offset-3">
+              <input type="radio" ng-model="q.response" name="likert{{$index}}" value="1" required>
+              <label>1 - Not a reason to run</label>
+            </li>
+            <li class="col-md-1">
+              <input type="radio" ng-model="q.response" name="likert{{$index}}" value="2" required>
+              <label>2</label>
+            </li>
+            <li class="col-md-1">
+              <input type="radio" ng-model="q.response" name="likert{{$index}}" value="3" required>
+              <label>3</label>
+            </li>
+            <li class="col-md-1">
+              <input type="radio" ng-model="q.response" name="likert{{$index}}" value="4" required>
+              <label>4</label>
+            </li>
+            <li class="col-md-1">
+              <input type="radio" ng-model="q.response" name="likert{{$index}}" value="5" required>
+              <label>5</label>
+            </li>
+            <li class="col-md-1">
+              <input type="radio" ng-model="q.response" name="likert{{$index}}" value="6" required>
+              <label>6</label>
+            </li>
+            <li class="col-md-1">
+              <input type="radio" ng-model="q.response" name="likert{{$index}}" value="7" required>
+              <label>7 - Definitely a reason to run</label>
+            </li>
+          </ul>
+        </div>
+        <button ng-disabled="surveyQuestions.$invalid" class="btn btn-lg btn-success btn-block col-md-offset-5" ng-click="submit()">Submit</button>
+      </form>
+    </div> <!-- /container -->
+
+    <script src="javascripts/app.js"></script>
+    <script src="javascripts/factories/UsersAPI.js"></script>
+    <script src="javascripts/controllers/surveyController.js"></script>
+  </body>
+    <script src="/otherCharts/Chart.min.js"></script> 
+    <script src="/charts/angular-chart.min.js"></script>
+</html>

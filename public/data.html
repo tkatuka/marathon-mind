@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+    	<meta name="author" content="">
+		<title>Marathon Mind</title>
+		<link rel="stylesheet" type="text/css" href="stylesheets/dist/css/bootstrap.min.css">
+    <link href="stylesheets/jumbotron-narrow.css" rel="stylesheet">
+    <link rel="stylesheet" href="/charts/angular-chart.css">
+    <script src="javascripts/fileSaver.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
+    <script src="stylesheets/dist/js/bootstrap.min.js"></script>
+	</head>
+
+ <body ng-app="app" ng-controller="dataController">
+
+    <div class="container">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation"><a href="/home">Home</a></li>
+            <li ng-if="me.account.admin" class="active" role="presentation"><a href="/data">View Data</a></li>
+            <li role="presentation"><a href="/logout">Logout</a></li>
+          </ul>
+        </nav>
+        <h3 class="text-muted">Marathon Mind</h3>
+      </div>
+
+      <div class="jumbotron">
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner" role="listbox">
+            <div class="item active">
+              <div class="container">
+                <h3>Average MOMS scores</h3>
+                <canvas id="radar" class="chart chart-radar" chart-data="data" chart-labels="labels"></canvas>
+              </div>
+            </div>
+            <div class="item">
+              <div class="container">
+                <h3>Average Demographics</h3>
+                <canvas id="pie" class="chart chart-pie"
+                  chart-data="pieData" chart-labels="pieLabels" chart-legend="true">
+                </canvas> 
+              </div>
+            </div>
+            <div class="item">
+              <div class="container">
+                <h3>Average Training Information</h3>
+                <canvas id="bar" class="chart chart-bar"
+                  chart-data="barData" chart-labels="barLabels">
+                </canvas> 
+              </div>
+            </div>
+          </div>
+          <div class="container" style="top-margin: 5px;">
+            <ol class="carousel-indicators">
+              <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+              <li data-target="#myCarousel" data-slide-to="1"></li>
+              <li data-target="#myCarousel" data-slide-to="2"></li>
+            </ol>
+          </div>
+          <!-- Controls -->
+          <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+          </a>
+          <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+          </a>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <p>Brigham Young University</p>
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Data</button>
+         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#emailModal">Open Email</button>
+         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#rolesModal">Role Manager</button>
+      </footer>
+
+      <!--Hidden Table for Exporting -->
+      <div id="exportable" ng-show="false">
+        <table class="table table-hover table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th title="Sex">Sex</th>
+              <th title="Age">Age</th>
+              <th title="Race/Ethnicity">Ethnicity</th>
+              <th title="Marital Status">Marital Status</th>
+              <th title="Height in Inches">Height in Inches</th>
+              <th title="Weight in Pounds">Weight in Pounds</th>
+              <th title="Miles Run per Week">Miles Run Per Week</th>
+              <th title="Days Trained per Week">Days Trained per Week</th>
+              <th title="Years Running">Years Running</th>
+              <th title="Longest Training Run in Miles">Longest Training Run in Miles</th>
+              <th title="Percent of Training Time Spent Alone">Percent of Training Time Spent Alone</th>
+              <th title="Trains Twice per Day">Trains Twice Per Day</th>
+              <th title="Half-marathons Completed">Half-marathons Completed</th>
+              <th title="Marathons Completed">Marathons Completed</th>
+              <th title="Ultra-marathons Completed">Ultras Completed</th>
+              <th title="Fastest Marathon Time">Fastest Marathon Time (Hours)</th>
+              <th title="Fastest Marathon Time">Fastest Marathon Time (Minutes)</th>
+              <th title="Fastest Marathon Time">Fastest Marathon Time (Seconds)</th>
+              <th title="Had Running Related Injury">Has Had Running Related Injury</th>
+              <th title="Trained While Injured">Has Trained While Injured</th>
+              <th title="">To Look Leaner</th>
+              <th title="">To beat someone I've never beaten before</th>    
+              <th title="">To earn respect of peers</th>
+              <th title="">To try to run faster</th>
+              <th title="">To meet people/th>
+              <th title="">To improve my sense of self worth</th>
+              <th title="">To concentrate on my thoughts</th>
+              <th title="">To prevent illness</th>
+              <th title="">To make my life more complete</th>
+              <th title="">To have time alone to sort things out</th>
+              <th title="T">To feel more confident about myself</th>
+              <th title="">To feel at peace with the world</th>
+              <th title="">To prolong my life</th>
+              <th title="">To help control my weight</th>
+              <th title="">To socialize with other runners</th>
+              <th title="">People look up to me</th>
+              <th title="">To get a faster time than my friends</th>
+              <th title="">To improve my running speed</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="user in users" ng-if="user.account.results !== null">
+              <td>{{user.demographics.sex}}</td>
+              <td>{{user.demographics.age}}</td>
+              <td>{{user.demographics.ethnicity}}</td>
+              <td>{{user.demographics.maritalStatus}}</td>
+              <td>{{user.demographics.height}}</td>
+              <td>{{user.demographics.weight}}</td>
+              <td>{{user.training.milesPerWeek}}</td>
+              <td>{{user.training.daysPerWeek}}</td>
+              <td>{{user.training.yearsRunning}}</td>
+              <td>{{user.training.longestTrainingRun}}</td>
+              <td>{{user.training.timeTrainingAlone}}</td>
+              <td>{{user.training.trainTwicePerDay}}</td>
+              <td>{{user.training.halfMarathonsRun}}</td>
+              <td>{{user.training.marathonsRun}}</td>
+              <td>{{user.training.ultraMarathonsRun}}</td>
+              <td>{{user.training.fastestMarathonHours}}</td>
+              <td>{{user.training.fastestMarathonMinutes}}</td>
+              <td>{{user.training.fastestMarathonSeconds}}</td>
+              <td>{{user.training.runningRelatedInjury}}</td>
+              <td>{{user.training.trainedWhileInjured}}</td>
+              <td ng-repeat="result in user.account.results">{{result.response}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+     <!-- MOMS Modal -->
+      <div id="myModal" class="modal fade" role="dialog" style="overflow-x: auto;">
+        <div class="modal-dialog" style="display:table;">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close pull-left" style="margin-right: 5px;" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Motivation of Marathoners Scale</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table table-hover table-bordered table-condensed">
+                <thead>
+                  <tr>
+                    <th title="Sex">Sex</th>
+                    <th title="Age">Age</th>
+                    <th title="Race/Ethnicity">Race</th>
+                    <th title="Marital Status">M.S</th>
+                    <th title="Height in Inches">Ht.</th>
+                    <th title="Weight in Pounds">Wt.</th>
+                    <th title="Miles Run per Week">M.P.W</th>
+                    <th title="Days Trained per Week">D.P.W</th>
+                    <th title="Years Running">Years Run</th>
+                    <th title="Longest Training Run in Miles">L.T.R</th>
+                    <th title="Percent of Training Time Spent Alone">Alone</th>
+                    <th title="Trains Twice per Day">2x/Day</th>
+                    <th title="Half-marathons Completed">Halfs</th>
+                    <th title="Marathons Completed">Marathons</th>
+                    <th title="Ultra-marathons Completed">Ultras</th>
+                    <th title="Fastest Marathon Time">F.M.R</th>
+                    <th title="Had Running Related Injury">R.R.I</th>
+                    <th title="Trained While Injured">T.W.I</th>
+                    <th title="To Look Leaner">Q1</th>
+                    <th title="To beat someone I've never beaten before">Q2</th>    
+                    <th title="To earn respect of peers">Q3</th>
+                    <th title="To try to run faster">Q4</th>
+                    <th title="To meet people">Q5</th>
+                    <th title="To improve my sense of self worth">Q6</th>
+                    <th title="To concentrate on my thoughts">Q7</th>
+                    <th title="To prevent illness">Q8</th>
+                    <th title="To make my life more complete">Q9</th>
+                    <th title="To have time alone to sort things out">Q10</th>
+                    <th title="To feel more confident about myself">Q11</th>
+                    <th title="To feel at peace with the world">Q12</th>
+                    <th title="To prolong my life">Q13</th>
+                    <th title="To help control my weight">Q14</th>
+                    <th title="To socialize with other runners">Q15</th>
+                    <th title="People look up to me">Q16</th>
+                    <th title="To get a faster time than my friends">Q17</th>
+                    <th title="To improve my running speed">Q18</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="user in users | filter : paginate" ng-if="user.account.results !== null">
+                    <td>{{user.demographics.sex}}</td>
+                    <td>{{user.demographics.age}}</td>
+                    <td>{{user.demographics.ethnicity}}</td>
+                    <td>{{user.demographics.maritalStatus}}</td>
+                    <td>{{user.demographics.height}} in.</td>
+                    <td>{{user.demographics.weight}} lbs.</td>
+                    <td>{{user.training.milesPerWeek}}</td>
+                    <td>{{user.training.daysPerWeek}}</td>
+                    <td>{{user.training.yearsRunning}}</td>
+                    <td>{{user.training.longestTrainingRun}}</td>
+                    <td>{{user.training.timeTrainingAlone}}%</td>
+                    <td>{{user.training.trainTwicePerDay}}</td>
+                    <td>{{user.training.halfMarathonsRun}}</td>
+                    <td>{{user.training.marathonsRun}}</td>
+                    <td>{{user.training.ultraMarathonsRun}}</td>
+                    <td>{{user.training.fastestMarathonHours}}:{{user.training.fastestMarathonMinutes | zeroPad}}:{{user.training.fastestMarathonSeconds |zeroPad}}</td>
+                    <td>{{user.training.runningRelatedInjury}}</td>
+                    <td>{{user.training.trainedWhileInjured}}</td>
+                    <td ng-repeat="result in user.account.results">{{result.response}}</td>
+                  </tr>
+                </tbody>
+                <div class="pull-left">
+                  <span style="cursor:pointer" class="glyphicon glyphicon-arrow-left" ng-click="prevPage()" ng-show="currentPage !== 1"></span>
+                  <strong>Page {{currentPage}} of {{maxPage}}</strong>
+                  <span style="cursor:pointer" class="glyphicon glyphicon-arrow-right" ng-click="nextPage()" ng-show="currentPage !== maxPage"></span>
+                </div>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-success pull-left" ng-click="exportData()">Export</button>
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            </div>
+          </div> 
+        </div>
+      </div><!-- /MOMS Modal -->
+
+      <!-- Email Modal -->
+      <div id="emailModal" class="modal fade" role="dialog" style="overflow-x: auto;">
+        <div class="modal-dialog" style="display:table;">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close pull-left" style="margin-right: 5px;" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Email List</h4>
+            </div>
+            <div class="modal-body">
+              <p>
+                <span ng-repeat="user in users" ng-if="user.account.pleaseNotify">{{user.account.email}}; </span>
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div><!-- /Email Modal -->
+
+      <!-- Email Modal -->
+      <div id="rolesModal" class="modal fade" role="dialog" style="overflow-x: auto;">
+        <div class="modal-dialog" style="display:table;">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close pull-left" style="margin-right: 5px;" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Assign Admin Rights</h4>
+            </div>
+            <div class="modal-body">
+              <h1>Search for a User</h1>
+              <input class="form-control" type="text" placeholder="Search" ng-model="searchText"><br>
+              <div ng-hide="searchText === ''" ng-repeat="user in users | orderBy:'account.name' | filter: searchText">
+                <div class="btn-group">
+                  <button class="btn btn-default firstButton">{{user.account.name}}</button>
+                  <button class="btn btn-default secondButton" ng-class="{active: user.account.admin}" ng-click="makeAdmin(user)">Admin</button>
+                  <button class="btn btn-default" ng-class="{active: !user.account.admin}" ng-click="removeAdmin(user)">User</button>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div><!-- /Email Modal -->
+
+    </div> <!-- /container -->
+    <script src="javascripts/app.js"></script>
+    <script src="javascripts/factories/UsersAPI.js"></script>
+    <script src="javascripts/filters/zeroPad.js"></script>
+    <script src="javascripts/controllers/dataController.js"></script>
+  </body>
+  <script src="/otherCharts/Chart.min.js"></script> 
+  <script src="/charts/angular-chart.min.js"></script>
+</html>
+
