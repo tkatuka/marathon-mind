@@ -14,11 +14,25 @@ router.get('/newProfile', function(req, res) {
 	res.sendfile('./public/newProfile.html');
 });
 
+router.get('/demographics', ensureAuthenticated, function(req, res) {
+	res.sendfile('./public/demographics.html');
+});
+
+router.get('/trainingInfo', ensureAuthenticated, function(req, res) {
+	res.sendfile('./public/trainingInfo.html');
+});
+
 router.get('/survey', untakenSurvey, function(req,res) {
 	res.sendfile('./public/survey.html');
 });
 
+router.get('/motivation', ensureAuthenticated, function(req,res) {
+	console.log("In /motivation route");
+	res.sendfile('./public/motivation.html');
+});
+
 router.get('/home', ensureAuthenticated, function(req,res) {
+	console.log("In /home route");
 	res.sendfile('./public/home.html');
 });
 

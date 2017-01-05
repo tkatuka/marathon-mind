@@ -69,9 +69,19 @@ app.controller('homeController', ['$scope', '$http', 'UsersAPI', function($scope
             data.account.rawScores.weight,
             data.account.rawScores.respect,
             data.account.rawScores.social],
-            $scope.myCluster.scores
         ];
-        $scope.series = ["Me", $scope.myCluster.type]
+        $scope.series = ["Me"];
+	if($scope.myCluster != null)
+        {       
+           $scope.data.push($scope.myCluster.scores);
+	   $scope.series.push($scope.myCluster.type);
+        }
         console.log($scope.data)
     });
+ 
+   $scope.demographics = function(user) {
+	console.log("demographics clicked");
+	console.log(user);	
+	
+    };
 }]);

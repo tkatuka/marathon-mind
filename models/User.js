@@ -64,7 +64,7 @@ var kmeans = new clusterMagic.Kmeans(centroids);
 UserSchema.methods.generateHash = function(password) {
     console.log("prehash=" + password);
     salt = bcrypt.genSaltSync(10);
-    console.log("should have salt")
+    console.log(salt)
     var hash = bcrypt.hashSync(password, salt);
     console.log(hash)
     return hash;

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+    <title>Motivation Module</title>
+    <link rel="stylesheet" type="text/css" href="stylesheets/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/charts/angular-chart.css">
+    <link href="stylesheets/jumbotron-narrow.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
+    <script src="stylesheets/dist/js/bootstrap.min.js"></script>
+</head>
+
+<body ng-app="app" ng-controller="homeController">
+
+  <div class="container">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation" class="active"><a href="/home">Home</a></li>
+            <li ng-if="user.account.admin" role="presentation"><a href="/data">View Data</a></li>
+            <li role="presentation"><a href="/logout">Logout</a></li>
+          </ul>
+        </nav>
+        <h3 class="running_head">Marathon Mind</h3>
+      </div>
+
+    <div ng-show="user.account.testTaken" class="jumbotron">
+     <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      
+       <div class="carousel-inner" role="listbox">
+        
+         <div class="item active">
+           <div class="container">
+             <h3>You are a {{user.account.rawScores.cluster}}</h3>
+             <canvas id="radar" class="chart chart-radar" chart-data="data" chart-labels="labels" chart-legend="true" chart-series="series" chart-colours="colors"></canvas> 
+           </div>
+         </div>
+       
+         <div class="item">
+           <div class="container">
+             <h3>{{myCluster.type}}s</h3>
+             <p>{{myCluster.info}}</p>  
+           </div>
+         </div>
+       </div>
+
+       <div class="container" style="top-margin: 5px;">
+         <ol class="carousel-indicators">
+           <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+           <li data-target="#myCarousel" data-slide-to="1"></li>
+         </ol>
+       </div>
+       <!-- Controls -->
+       <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+         <span class="glyphicon glyphicon-chevron-left"></span>
+       </a>
+       <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+         <span class="glyphicon glyphicon-chevron-right"></span>
+       </a>
+      </div>
+     </div>
+     
+    <div ng-show="!user.account.testTaken" class="jumbotron">
+      <h1>Welcome {{user.account.name}}</h1>
+      <p class="lead">Want to find out what kind of runner you are?  Take this short survey and see how you compare to other runners.</p>
+      <p><a class="btn btn-lg btn-success" href="/survey" role="button">Survey</a></p>
+    </div>
+
+   <footer class="footer">
+     <p>Brigham Young University</p>
+   </footer>
+   </div>
+
+   <script src="javascripts/app.js"></script>
+   <script src="javascripts/factories/UsersAPI.js"></script>
+   <script src="javascripts/controllers/homeController.js"></script>
+</body>
+  <script src="/otherCharts/Chart.min.js"></script> 
+  <script src="/charts/angular-chart.min.js"></script>
+</html>

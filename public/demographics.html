@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+        
+    <title>Demographics</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="stylesheets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/charts/angular-chart.css">
+        
+    <!-- Custom styles for this template -->
+    <link href="stylesheets/demographics.css" rel="stylesheet">
+        
+    <!-- Angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
+</head>
+
+<body ng-app="app" ng-controller="demographicsController">
+      <div class="container">
+      <!-- Demographics -->
+      <form  name="demographics" class="form-signin">
+        <h2 class="form-signin-heading">Demographics</h2>
+	<div class="form-group">
+    	  <label for="inputAge">Age: </label>
+     	  <input type="Number" class="form-control" id="inputAge" min="0" placeholder="Age" ng-model="demographicsInfo.age" required>
+  	</div>
+
+	<div class="form-group">
+          <label for="inputWeight">Weight: </label>
+          <input type="Number" class="form-control" id="inputWeight" min="0" placeholder="Weight in Pounds" ng-model="demographicsInfo.weight" required>
+        </div>
+
+	<div class="form-group">
+          <label for="inputHeight">Height: </label>
+          <input type="Number" id="inputHeight" class="form-control" min="0" placeholder="Height in Inches" ng-model="demographicsInfo.height" required>
+	</div>
+
+	<div class="form-group">
+          <label for="inputSex">Sex: </label>
+          <select id="inputSex" class="form-control selectDemo" title="Sex" ng-model="demographicsInfo.sex" required>
+            <option value="" style="display:none">Sex</option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+	</div>
+
+	<div class="form-group">
+          <label for="inputMarStatus">Marital Status: </label>
+          <select id="inputMarStatus" class="form-control selectDemo" title="Marital Status" ng-model="demographicsInfo.maritalStatus" required>
+            <option value="" style="display:none;">Marital Status</option>
+            <option>Single</option>
+            <option>Married</option>
+            <option>Divorced</option>
+            <option>Widowed</option>
+            <option>Living with a partner</option>
+          </select>
+	</div>
+
+	<div class="form-group">
+          <label for="inputRaceEthnicity">Race/Ethnicity: </label>
+          <select id="inputRaceEthnicity" class="form-control selectDemo" title="Race/Ethnicity" ng-model="demographicsInfo.ethnicity" required>
+            <option value="" style="display:none">Race</option>
+            <option>Caucasian</option>
+            <option>African American</option>
+            <option>Hispanic</option>
+            <option>Asian</option>
+            <option>Pacific Islander</option>
+            <option>Native American/Indian</option>
+            <option>Other</option>
+          </select>
+	</div>
+	<button ng-disabled="demographics.$invalid" ng-click="storeDemographics(demographicsInfo)" class="btn btn-lg btn-success btn-block">{{buttonName}}</button>
+	
+      </form>
+
+      </div>
+    <script src="javascripts/app.js"></script>
+    <script src="javascripts/factories/UsersAPI.js"></script>
+    <script src="javascripts/controllers/demographicsController.js"></script>
+ </body>
+    <script src="/otherCharts/Chart.min.js"></script>
+    <script src="/charts/angular-chart.min.js"></script>
+</html>

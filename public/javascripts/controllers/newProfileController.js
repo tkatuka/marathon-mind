@@ -9,9 +9,31 @@ app.controller('newProfileController', ['$scope', '$http', '$window', 'UsersAPI'
     $scope.showDemographics = false;
     $scope.showTraining = false;
 
+    $scope.create = function(accountInfo) {
+
+	console.log("in create function");	
+	$scope.user.account = angular.copy(accountInfo);
+	console.log($scope.user);
+
+        UsersAPI.postMe($scope.user).success(function(data){
+            console.log("successfully posted");
+	    var params = {
+                username: $scope.user.account.email,
+                password: $scope.user.account.password
+            }
+
+            $http({
+                url: '/login',
+                method: 'POST',
+                data: params
+            }).success(function(data){
+                $window.location.href = '/home';
+            })
+        });
+    }
+
     $scope.toDemographics = function(accountInfo) {
         $scope.user.account = angular.copy(accountInfo);
-        console.log($scope.user)
         $scope.showUserInfo = false;
         $scope.showDemographics = true;
     };
@@ -23,7 +45,7 @@ app.controller('newProfileController', ['$scope', '$http', '$window', 'UsersAPI'
         $scope.showTraining = true;
     };
 
-    $scope.createUser = function(trainingInfo) {
+    $scope.storeTrainingInfo = function(trainingInfo) {
         $scope.user.training = angular.copy(trainingInfo);
 
         if ($scope.user.training.injured === "Yes") {
